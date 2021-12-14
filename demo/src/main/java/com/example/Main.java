@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.plaf.basic.BasicBorders.SplitPaneBorder;
 
@@ -52,9 +54,10 @@ public class Main {
         for(String s:listOfDir){
             System.out.println(s);
         }
+        //ExecutorService threadPool = Executors.newFixedThreadPool(3);
         //call the Server
         HttpServer myServer = new HttpServer();
-        myServer.StartUp(portNumber, listOfDir);
+        myServer.StartUp(portNumber,listOfDir);
 
         
     }

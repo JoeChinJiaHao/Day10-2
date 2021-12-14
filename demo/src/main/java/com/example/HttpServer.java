@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,18 +14,40 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HttpServer {
-    HttpServer(){};
-    ExecutorService threadPool = Executors.newFixedThreadPool(3);
+    
+    
     public Socket socket;
     public ServerSocket serverSocket;
-    public void kk(){
-        System.out.println("ok");
-    }
-    public void StartUp(Integer portNum, List<String> dirList) throws IOException{
+    
+    public void StartUp(Integer portNum,List<String> dirList) throws IOException{
         //server start here 
+        ExecutorService threadPool = Executors.newFixedThreadPool(3);
         serverSocket = new ServerSocket(portNum);
-        System.out.println("Listening at port" + portNum.toString());
+        System.out.println("Listening at port: " + portNum.toString());
         //check if path exist
+        for(String s:dirList){
+           //check if path is readable by server 
+            File file = new File(s);
+            if (file.exists()){
+                System.out.println("path exist!");
+            }else{
+                System.exit(1);
+            }
+            if(file.isDirectory()){
+                System.out.println("path is a directory!");
+            }else{
+                System.exit(1);
+            }
+            if(file.canRead()){
+                System.out.println("path is readable!");
+            }else{
+                System.exit(1);
+            }
+
+
+        }
+        
+
     }
 
 }
