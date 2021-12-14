@@ -1,0 +1,19 @@
+img{
+    display:flex;
+    padding: 3px;   
+    margin-left:auto;
+    margin-right: auto;
+    border: 2px solid red;
+    height: 25h;
+    width:50%;
+    vertical-align:middle;
+}
+h1{
+    text-align:center;
+    size:6em;
+    color: blue;
+}
+p{
+    text-align: center;
+    size: 3em;
+}
