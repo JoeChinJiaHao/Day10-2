@@ -1,14 +1,20 @@
 package com.example;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 public class HttpClientConnection implements Runnable {
     private final Socket socket;
@@ -61,6 +67,7 @@ public void run() {
                     if(file.exists()){
                         workingDir=ss;
                         fileInside=true;
+                        break;
                     }
                 }
                 if(fileInside==false){
@@ -70,16 +77,25 @@ public void run() {
                 }else{
                         if(workingDir.substring(workingDir.length()-4,workingDir.length()).equals(".png")){
                             String reply="HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n\r\n";
-                            //add resource content as bytes
-
                             hWrite.writeString(reply);
+                            hWrite.flush();
+                            //add resource content as bytes
+                            File file = new File(workingDir);
+                            byte[] bytes=Files.readAllBytes(Paths.get(workingDir));
+                            hWrite.writeBytes(bytes);
                             hWrite.flush();
                             flag=false;
                         }else{
                             String reply2="HTTP/1.1 200 OK\r\n\r\n";
-                            //add resource content as bytes
-
                             hWrite.writeString(reply2);
+                            hWrite.flush();
+                            //add resource content as bytes
+                            File file = new File(workingDir);
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            BufferedImage bI =  ImageIO.read(file);
+                            ImageIO.write(bI, "png", baos);
+                            byte[] bytes = baos.toByteArray();
+                            hWrite.writeBytes(bytes);
                             hWrite.flush();
                             flag=false;
 
