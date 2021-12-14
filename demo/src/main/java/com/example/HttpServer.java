@@ -57,7 +57,7 @@ public class HttpServer {
         try{
             while(true){
                 socket = serverSocket.accept();
-                HttpClientConnection hCC = new HttpClientConnection(socket);    
+                HttpClientConnection hCC = new HttpClientConnection(socket,dirList);    
                 threadPool.submit(hCC);
             }
         }finally{
