@@ -22,9 +22,8 @@ public class HttpServer {
     
     public void StartUp(Integer portNum,List<String> dirList) throws IOException{
         //server start here 
-        ExecutorService threadPool = Executors.newFixedThreadPool(3);
-        serverSocket = new ServerSocket(portNum);
-        System.out.println("Listening at port: " + portNum.toString());
+        
+        
         //check if path exist
         for(String s:dirList){
            //check if path is readable by server 
@@ -50,10 +49,21 @@ public class HttpServer {
                 System.out.printf("Path %s is not readable!",s);
                 System.exit(1);
             }
-
-
         }
-        
+        //directory check completed, threadmaking
+        ExecutorService threadPool = Executors.newFixedThreadPool(3);
+        serverSocket = new ServerSocket(portNum);
+        System.out.println("Listening at port: " + portNum.toString()); 
+        try{
+            while(true){
+                socket = serverSocket.accept();
+                HttpClientConnection hCC = new HttpClientConnection(socket);    
+                threadPool.submit(hCC);
+            }
+        }finally{
+            serverSocket.close();
+        }
+
 
     }
 
