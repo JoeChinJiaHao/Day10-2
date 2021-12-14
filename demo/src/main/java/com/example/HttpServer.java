@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,20 +28,26 @@ public class HttpServer {
         //check if path exist
         for(String s:dirList){
            //check if path is readable by server 
+            Path path = Paths.get(s);
             File file = new File(s);
-            if (file.exists()){
-                System.out.println("path exist!");
+            
+            //System.out.println(file.exists());
+            if (Files.exists(path)){
+                System.out.printf("Path %s exist!\n",s);
             }else{
+                System.out.printf("Path %s does not exist!",s);
                 System.exit(1);
             }
-            if(file.isDirectory()){
-                System.out.println("path is a directory!");
+            if(Files.isDirectory(path)){
+                System.out.printf("Path %s is a directory!\n",s);
             }else{
+                System.out.printf("Path %s is not a directory!",s);
                 System.exit(1);
             }
             if(file.canRead()){
-                System.out.println("path is readable!");
+                System.out.printf("Path %s is readable!\n",s);
             }else{
+                System.out.printf("Path %s is not readable!",s);
                 System.exit(1);
             }
 

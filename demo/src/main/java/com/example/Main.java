@@ -16,7 +16,7 @@ public class Main {
         Path curPath =Paths.get("");
         String curPathStr = curPath.toAbsolutePath().toString().replace("\\", "/");
         System.out.println(curPathStr);
-        String docR = curPathStr+"/src/main/java/com/exmaple/static/";
+        String docR = curPathStr+"/com/example/static";//+"/com/exmaple/static";
         List<String> listOfDir = new ArrayList<String>();
         Integer portNumber = 3000;
         String temp;
