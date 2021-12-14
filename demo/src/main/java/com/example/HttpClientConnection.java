@@ -80,17 +80,18 @@ public void run() {
                 }else{
                     System.out.println(workingDir);
                         if(!workingDir.substring(workingDir.length()-4,workingDir.length()).equals(".png")){
-                            String reply="HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n\r\n";
+                            String reply="HTTP/1.1 200 OK\r\n\r\n";
                             hWrite.writeString(reply);
                             hWrite.flush();
                             //add resource content as bytes
-                            File file = new File(workingDir);
+                            //File file = new File(workingDir);
                             byte[] bytes=Files.readAllBytes(Paths.get(workingDir));
                             hWrite.writeBytes(bytes);
                             hWrite.flush();
                             flag=false;
                         }else{
-                            String reply2="HTTP/1.1 200 OK\r\n\r\n";
+                            
+                            String reply2="HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n\r\n";
                             hWrite.writeString(reply2);
                             hWrite.flush();
                             //add resource content as bytes
