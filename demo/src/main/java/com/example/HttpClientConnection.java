@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -32,11 +33,13 @@ public void run() {
     BufferedReader in = null;
     HttpWriter hWrite=null;
     String line="";
+    ByteArrayOutputStream baos=null;
     try{
         //out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         line = in.readLine();
         hWrite = new HttpWriter(socket.getOutputStream());
+        baos = new ByteArrayOutputStream();
     }catch(IOException e){
         System.out.println("Error at read and write.");
     }
@@ -75,7 +78,8 @@ public void run() {
                     hWrite.flush();
                     flag=false;
                 }else{
-                        if(workingDir.substring(workingDir.length()-4,workingDir.length()).equals(".png")){
+                    System.out.println(workingDir);
+                        if(!workingDir.substring(workingDir.length()-4,workingDir.length()).equals(".png")){
                             String reply="HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n\r\n";
                             hWrite.writeString(reply);
                             hWrite.flush();
@@ -90,9 +94,8 @@ public void run() {
                             hWrite.writeString(reply2);
                             hWrite.flush();
                             //add resource content as bytes
-                            File file = new File(workingDir);
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            BufferedImage bI =  ImageIO.read(file);
+                             File file = new File(workingDir);
+                            BufferedImage bI =  ImageIO.read(new FileInputStream(file));
                             ImageIO.write(bI, "png", baos);
                             byte[] bytes = baos.toByteArray();
                             hWrite.writeBytes(bytes);
@@ -113,7 +116,7 @@ public void run() {
                 in.close();
                 socket.close();
             } catch (Exception e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
 
