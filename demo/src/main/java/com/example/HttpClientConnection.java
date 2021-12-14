@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 
 public class HttpClientConnection implements Runnable {
     private final Socket socket;
@@ -40,6 +41,7 @@ public void run() {
         line = in.readLine();
         hWrite = new HttpWriter(socket.getOutputStream());
         baos = new ByteArrayOutputStream();
+        //ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
     }catch(IOException e){
         System.out.println("Error at read and write.");
     }
@@ -96,9 +98,13 @@ public void run() {
                             hWrite.flush();
                             //add resource content as bytes
                              File file = new File(workingDir);
-                            BufferedImage bI =  ImageIO.read(new FileInputStream(file));
+                            BufferedImage bI =  ImageIO.read(file);
+                            
                             ImageIO.write(bI, "png", baos);
+                            
                             byte[] bytes = baos.toByteArray();
+                            baos.flush();
+                            baos.close();
                             hWrite.writeBytes(bytes);
                             hWrite.flush();
                             flag=false;
